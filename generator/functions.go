@@ -17,6 +17,8 @@
 package generator
 
 import (
+	"fmt"
+	"math"
 	"net/http"
 	"sort"
 	"strings"
@@ -46,6 +48,36 @@ var funcMap = template.FuncMap{
 	"firstPropertyIDInCustomizedType": firstPropertyIDInCustomizedType,
 
 	"statusText": statusText,
+
+	"hexCodePowerOf2": hexCodePowerOf2,
+	"converArray":     converArray,
+	"mergeArray":      mergeArray,
+	"upper":           upper,
+}
+
+func mergeArray(array1 []*capsules.Property, array2 []*capsules.Property) []*capsules.Property {
+	for _, property := range array2 {
+		array1 = append(array1, property)
+	}
+	return array1
+}
+
+func converArray(properties map[string]*capsules.Property) []*capsules.Property {
+	var array []*capsules.Property
+	for _, property := range properties {
+		array = append(array, property)
+	}
+	return array
+}
+
+func hexCodePowerOf2(power int) string {
+	outputStr := ""
+	outputStr = fmt.Sprintf("%x", int(math.Pow(float64(2), float64(power))))
+	return outputStr
+}
+
+func upper(original string) string {
+	return strings.ToUpper(original)
 }
 
 func lower(original string) string {

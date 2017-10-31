@@ -162,6 +162,18 @@ Copyright (C) 2016-2017 Yunify, Inc.`,
 				err = codeGenerator.Run()
 				utils.CheckErrorForExit(err)
 			}
+
+			if template := loadedTemplates["types_cpp"]; template != nil {
+				template.FileContent += sharedTemplateContent
+				for _, customizedType := range spec.Data.CustomizedTypes {
+					template.UpdateOutputFilename(customizedType.Name, template.OutputFileNaming.Style)
+					template.UpdateOutputFilePath(codeOutputDirectory + "/types")
+					codeCapsule.SetMode(template.ID, customizedType.ID)
+					codeGenerator.Set(codeCapsule, template)
+					err = codeGenerator.Run()
+					utils.CheckErrorForExit(err)
+				}
+			}
 		}
 
 		fmt.Println("\nEverything looks fine.")
